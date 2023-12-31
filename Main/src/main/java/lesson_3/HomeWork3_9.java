@@ -1,6 +1,6 @@
 package lesson_3;
 
-public class homeWork3_9 {
+public class HomeWork3_9 {
     public static void matrixDiagonalFiller() {
         int[][] numbers = new int[5][5];
         for (int i = 0; i < numbers.length; i++) {

@@ -1,6 +1,6 @@
 package lesson_3;
 
-public class homeWork3_6 {
+public class HomeWork3_6 {
     public static void replacementNumber() {
         int[] numbers = {1, 1, 1, 0, 0, 1, 0, 0, 0, 1};
         for (int number : numbers) {
