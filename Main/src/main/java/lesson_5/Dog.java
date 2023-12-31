@@ -1,11 +1,19 @@
 package lesson_5;
 
 public class Dog extends Animal {
-    private int countDog = 0;
+    private static int totalDogs = 0;
+
+    public Dog() {
+        // При создании новой собаки увеличиваем счетчик собак
+        totalDogs++;
+    }
+
+    public static int getTotalDogs() {
+        return totalDogs;
+    }
 
     public void run(int distation) {
         System.out.println((distation <= 500) ? "Dog пробежал " + distation + "m" : "Dog столько не бегает");
-        countDog++;
     }
 
     public void swim(int distation) {
