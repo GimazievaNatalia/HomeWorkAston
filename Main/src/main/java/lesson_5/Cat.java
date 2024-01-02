@@ -26,11 +26,11 @@ public class Cat extends Animal {
     public static int getTotalCats() {
         return totalCats;
     }
-
+    @Override
     public void run(int distation) {
         System.out.println((distation <= 200) ? (name + " пробежал " + distation + "m") : (name + " столько не бегает"));
     }
-
+    @Override
     public void swim(int distation) {
         if (distation > 0) {
             System.out.println(name + " не умеет плавать");
