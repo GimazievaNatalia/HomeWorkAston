@@ -1,6 +1,5 @@
 package org.example.gimazieva;
 
-import java.io.*;
 
 public class Main {
 
@@ -8,6 +7,8 @@ public class Main {
         String[] header = {"value1", "value2", "value3"};
         int[][] data = {{100, 200, 123}, {300, 400, 500}};
         AppData appData = new AppData(header, data);
+        appData.save(header, data);
+        appData.reading(header, data);
     }
 }
 

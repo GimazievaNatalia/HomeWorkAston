@@ -1,10 +1,7 @@
 package org.example.gimazieva;
 
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.util.Scanner;
 
 public class AppData {
     private String[] header;
@@ -23,17 +20,40 @@ public class AppData {
         return data;
     }
 
-    public static void save(AppData appData){
-        FileOutputStream fos = null;
+    File file = new File("F:/test.csv");
+
+    public void save(String[] header, int[][] data) { //записываем в файл
+
+        PrintWriter writer = null;
         try {
-            fos = new FileOutputStream("F:/data.csv");
+            writer = new PrintWriter(file);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        OutputStreamWriter osw = new OutputStreamWriter(fos);
-        BufferedWriter BufferedWriter = new BufferedWriter(osw);
-        
-
+        for (String line : header) { //записываем массив строк
+            writer.print(line);
+            writer.print(";");
+        }
+        writer.println();
+        for (int[] range : data) {  // записываем многомерный массив чисел
+            for (int number : range) {
+                writer.print(number);
+                writer.print(";");
+            }
+            writer.println();
+        }
+        writer.close();
     }
 
+    public void reading(String[] header, int[][] data) {  //читаем из файла
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        while (scanner.hasNextLine()) {
+            System.out.println(scanner.nextLine());
+        }
+    }
 }
