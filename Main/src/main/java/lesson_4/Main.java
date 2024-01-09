@@ -15,6 +15,10 @@ public class Main {
             Person.showPersoninformation();
         }
 
+        Park park = new Park();
+        Attraction attraction = park.new Attraction();
     }
 }
+
+
 

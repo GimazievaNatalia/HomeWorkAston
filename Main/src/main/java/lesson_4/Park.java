@@ -8,12 +8,12 @@ public class Park {
     }
 
     // внутренний класс
-    private class Info {
+    private class Attraction {
         private String attraction;
         private String time;
         private int price;
 
-        public Info(String attraction, String time, int price) {
+        public Attraction(String attraction, String time, int price) {
             this.attraction = attraction;
             this.time = time;
             this.price = price;
