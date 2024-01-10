@@ -1,28 +1,32 @@
 package lesson_7;
 
+import java.util.Arrays;
+
 public class Array {
-    public static void getArray (String[][] myArray) throws MyArraySizeException, MyArrayDataException {
-        if(myArray.length != 4 || myArray[0].length != 4) {
+    public static void checkArray(String[][] myArray) throws MyArraySizeException, MyArrayDataException {
+        if (myArray.length != 4 || myArray[0].length != 4) {
             throw new MyArraySizeException("Не верный размер массива");
         }
-        int [][] newArray = new int[4][4];
         int sumMassiv = 0;
-        for (String[] i : myArray) {
-            for (String[] j : myArray) {
-                newArray[i][j] = Integer.parseInt(myArray[i][j]);
-                sumMassiv += newArray[i][j];
-                System.out.println(sumMassiv);
-                if ((i instanceof String) && (j instanceof String)) {
+        for (int i = 0; i < myArray.length; i++) {
+            for (int j = 0; j < myArray[i].length; j++) {
+                try {
 
+                    int value = Integer.parseInt(myArray[i][j]);
+                    sumMassiv += value;
+                } catch (NumberFormatException e) {
+                    throw new MyArrayDataException("Неверные данные в ячейке [" + i + "][" + j + "]");
                 }
-                throw new MyArrayDataException("Не верный тип элемента");
-            }
-
-
             }
         }
+        System.out.println("Сумма массива: " + sumMassiv);
     }
-
 }
+
+
+
+
+
+
 
 
