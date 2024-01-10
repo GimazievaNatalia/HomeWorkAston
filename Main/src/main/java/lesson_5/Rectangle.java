@@ -1,6 +1,6 @@
 package lesson_5;
 
-public class Rectangle extends Figures implements Shape {
+public class Rectangle extends Figures implements Calculabe {
     private int sideA;
     private int sideB;
 

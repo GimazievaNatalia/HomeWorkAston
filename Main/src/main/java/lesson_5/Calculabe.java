@@ -1,6 +1,6 @@
 package lesson_5;
 
-public interface Shape {
+public interface Calculabe {
     default void getPerimetr() {
         System.out.println("Базовая реализация метода в интерфейсе");
     }

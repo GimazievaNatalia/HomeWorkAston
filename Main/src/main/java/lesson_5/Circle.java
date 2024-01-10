@@ -1,6 +1,6 @@
 package lesson_5;
 
-public class Circle extends Figures implements Shape {
+public class Circle extends Figures implements Calculabe {
     private double radius;
 
     public Circle(String colorFill, String colorBoulder, double radius) {

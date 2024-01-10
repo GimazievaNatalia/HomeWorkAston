@@ -4,8 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
         Dog dog = new Dog();
+        Bowl bowl = new Bowl();
 
         Cat cat = new Cat("Барсик", false, 8);
+
 
 
         Circle circle = new Circle("желтый", "голубой", 5);
@@ -16,9 +18,9 @@ public class Main {
         dog.swim(30);
         cat.run(1000);
         cat.swim(100);
-        cat.eatBoul();
-        cat.addFood();
-        cat.eatFromBowlarraycat();
+        cat.eatBowl(bowl);
+        bowl.addFood(cat);
+        cat.eatFromBowlarraycat(bowl);
         System.out.println("Общее количество животных: " + Animal.getTotalAnimals());
         System.out.println("Количество созданных котов: " + Cat.getTotalCats());
         System.out.println("Количество созданных собак: " + Dog.getTotalDogs());
