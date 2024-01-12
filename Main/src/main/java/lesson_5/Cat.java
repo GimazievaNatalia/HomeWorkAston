@@ -7,10 +7,6 @@ public class Cat extends Animal {
     private boolean fullnes = false;//сытость кота, изначально кот голодный
     private int howMuchCatEat;//сколько ест кот
 
-    public String getName() {
-        return name;
-    }
-
     public int getHowMuchCatEat() {
         return howMuchCatEat;
     }
@@ -34,12 +30,21 @@ public class Cat extends Animal {
 
     @Override
     public void swim(int distation) {
-            System.out.println(name + " не умеет плавать");
+        System.out.println(name + " не умеет плавать");
     }
 
     public void eatBowl(Bowl bowl) { //кормим одинокого кота
-        System.out.println((fullnes = bowl.getBowlFood() - howMuchCatEat >= 0) ? fullnes : (name + " остался голодным"));
+        int bowl2 = bowl.getBowlFood() - howMuchCatEat;
+        bowl.setBowlFood(bowl2);
+        System.out.println((bowl2 >= 0) ? fullnes : (name + " остался голодным"));
     }
 
+    public void eatFromBowlarraycat(Bowl bowl, Cat[] catArray) { //массив котов кушает
+        int bowl2 = bowl.getBowlFood();
+        for (Cat cat : catArray) {
+            bowl2 -= cat.howMuchCatEat;
+            System.out.println(bowl2 > 0 ? (cat.name + " поел из миски") : (cat.name + " остался голодный"));
+        }
+    }
 
 }
