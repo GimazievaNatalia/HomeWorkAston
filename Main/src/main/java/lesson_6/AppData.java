@@ -20,7 +20,7 @@ import java.util.Scanner;
             return data;
         }
 
-        File file = new File("F:/test.csv");
+        File file = new File("resources/test.csv");
 
         public void save(String[] header, int[][] data) { //записываем в файл
 
@@ -45,16 +45,13 @@ import java.util.Scanner;
             writer.close();
         }
 
-        public void reading(String[] header, int[][] data) {  //читаем из файла
-            Scanner scanner = null;
-            try {
-                scanner = new Scanner(file);
+        public void reading() { // читаем из файла
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    System.out.println(scanner.nextLine());
+                }
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            while (scanner.hasNextLine()) {
-                System.out.println(scanner.nextLine());
-            }
         }
     }
-

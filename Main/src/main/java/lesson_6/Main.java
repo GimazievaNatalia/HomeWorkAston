@@ -6,7 +6,7 @@ public class Main {
         int[][] data = {{100, 200, 123}, {300, 400, 500}};
         AppData appData = new AppData(header, data);
         appData.save(header, data);
-        appData.reading(header, data);
+        appData.reading();
     }
 }
 
