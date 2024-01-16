@@ -18,7 +18,7 @@ public class AppData {
        public void save() throws IOException { //записываем в файл
         PrintWriter writer = null;
 
-           String relativePath = "resources/testtest1.csv";
+           String relativePath = "Main/src/main/resources/testtest.csv";
            this.file = new File(relativePath);
 
            File parentDir = file.getParentFile();
