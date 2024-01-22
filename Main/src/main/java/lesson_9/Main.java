@@ -37,6 +37,8 @@ public class Main {
         System.out.println(listF.stream().sorted(Comparator.comparingInt(s -> Integer.parseInt(s.substring(1)))).collect(Collectors.toList()));
 
         //4
+       University.ReturnStudent();
+
 
 
 
@@ -48,8 +50,6 @@ public class Main {
 
 
     }
-
-
 
 }
 
