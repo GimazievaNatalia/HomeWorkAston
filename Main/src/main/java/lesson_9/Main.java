@@ -7,6 +7,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.Comparator;
+import java.util.Collection;
+import java.util.*;
+
 public class Main {
     //определяем количество четных чисел в случайном наборе
     public static void main(String[] args) {
@@ -33,10 +36,17 @@ public class Main {
         listF.add("f4");
         System.out.println(listF.stream().sorted(Comparator.comparingInt(s -> Integer.parseInt(s.substring(1)))).collect(Collectors.toList()));
 
+        //4
+
+
+
+
+
+
     }
 
 
-//System.out.println(listHigh.stream().filter(element->element.length()==4).count());
+
 }
 
 
