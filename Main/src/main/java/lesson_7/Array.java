@@ -1,7 +1,5 @@
 package lesson_7;
 
-import java.util.Arrays;
-
 public class Array {
     public static void checkArray(String[][] myArray) throws MyArraySizeException, MyArrayDataException {
         if (myArray.length != 4 || myArray[0].length != 4) {
