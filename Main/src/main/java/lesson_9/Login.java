@@ -18,8 +18,7 @@ public class Login {
                 break;
             boxLogin.add(login);
         }
-        Predicate<String> nameStartsWithS = str -> str.startsWith("f");
-        boxLogin.stream().filter(nameStartsWithS).forEach(System.out::println);
+        boxLogin.stream().filter(str -> str.startsWith("f")).forEach(System.out::println);
     }
 }
 
