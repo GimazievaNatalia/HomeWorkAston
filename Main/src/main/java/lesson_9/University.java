@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class University {
-
     public static void ReturnStudent() {
         Collection<Student> students = Arrays.asList(
                 new Student("Дмитрий", 17, Sex.MAN),
@@ -36,7 +35,6 @@ public class University {
         private final String name;
         private final Integer age;
         private final Sex gender;
-
 
         public Student(String name, Integer age, Sex gender) {
             this.name = name;

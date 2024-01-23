@@ -1,7 +1,6 @@
 package lesson_9;
 
 public class Main {
-
     public static void main(String[] args) {
         Part1.getQuantityNumbersEvenRandomSet();
         Part2.getHighCollection();
