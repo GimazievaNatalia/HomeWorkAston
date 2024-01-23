@@ -7,19 +7,26 @@ import java.util.stream.Collectors;
 
 public class University {
 
-    public static void ReturnStudent(){
+    public static void ReturnStudent() {
         Collection<Student> students = Arrays.asList(
                 new Student("Дмитрий", 17, Sex.MAN),
                 new Student("Максим", 20, Sex.MAN),
                 new Student("Екатерина", 20, Sex.WOMAN),
                 new Student("Михаил", 28, Sex.MAN)
         );
-        System.out.println(students.stream()
+        //средний возраст мужиков
+        double averageAge = students.stream()
                 .filter(stu -> stu.getGender() == Sex.MAN)
                 .mapToInt(University.Student::getAge)
-                .average());//средний возраст мужиков
-        System.out.println(students.stream().filter(stud -> stud.getAge() < 27 && stud.getAge() > 18 && stud.getGender() == Sex.MAN).collect(Collectors.toList()));
+                .average()
+                .getAsDouble();
+        System.out.println(Math.round(averageAge * 10.0) / 10.0);
+        //призывники
+        System.out.println(students.stream()
+                .filter(stud -> stud.getAge() < 27 && stud.getAge() > 18 && stud.getGender() == Sex.MAN)
+                .collect(Collectors.toList()));
     }
+
     private enum Sex {
         MAN,
         WOMAN
@@ -72,7 +79,6 @@ public class University {
         public int hashCode() {
             return Objects.hash(name, age, gender);
         }
-
 
 
     }
