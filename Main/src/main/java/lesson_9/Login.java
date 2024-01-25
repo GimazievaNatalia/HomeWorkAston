@@ -17,6 +17,8 @@ public class Login {
             boxLogin.add(login);
         }
         boxLogin.stream().filter(str -> str.startsWith("f")).forEach(System.out::println);
+        scanner.close();
     }
+
 }
 
