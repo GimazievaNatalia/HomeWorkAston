@@ -9,27 +9,31 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class FactorialTest {
     private Factorial factorial;
+
     @DisplayName("Вычисление факториала")
     @ParameterizedTest
-   @CsvSource({"1,-1", "1,0", "1,1", "120,5"})
+    @CsvSource({"1,-1", "1,0", "1,1", "120,5"})
 
     @BeforeEach
-    void setUp(){
-     factorial = new Factorial();
+    void setUp() {
+        factorial = new Factorial();
     }
+
     @Test
-    void getFactorialWithPositiveNumber(){
-       long result = Factorial.getFactorial(5);
-        Assertions.assertEquals(120,result);
+    void getFactorialWithPositiveNumber() {
+        long result = Factorial.getFactorial(5);
+        Assertions.assertEquals(120, result);
     }
+
     @Test
-    void getFactorialWithZero(){
-       long result = Factorial.getFactorial(0);
-        Assertions.assertEquals(1,result);
+    void getFactorialWithZero() {
+        long result = Factorial.getFactorial(0);
+        Assertions.assertEquals(1, result);
     }
-   @Test
-    void getFactorialNegativNumber(){
-        Assertions.assertThrows(IllegalArgumentException.class, () ->Factorial.getFactorial(-4));
+
+    @Test
+    void getFactorialNegativNumber() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Factorial.getFactorial(-4));
 
     }
 }
