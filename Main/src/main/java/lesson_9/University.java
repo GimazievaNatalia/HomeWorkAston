@@ -7,9 +7,16 @@ import java.util.stream.Collectors;
 
 public class University {
     public static void ReturnStudent() {
-        Collection<Student> students = Arrays.asList(
+       /* Collection<Student> students = Arrays.asList(
                 new Student("Дмитрий", 17, Sex.MAN),
                 new Student("Максим", 20, Sex.MAN),
+                new Student("Екатерина", 20, Sex.WOMAN),
+                new Student("Михаил", 28, Sex.MAN)
+        )
+        */
+        Collection<Student> students = Arrays.asList(
+                new Student("Дмитрий", 18, Sex.MAN),
+                new Student("Максим", 27, Sex.MAN),
                 new Student("Екатерина", 20, Sex.WOMAN),
                 new Student("Михаил", 28, Sex.MAN)
         );
@@ -22,7 +29,7 @@ public class University {
         System.out.println(Math.round(averageAge * 10.0) / 10.0);
         //призывники
         System.out.println(students.stream()
-                .filter(stud -> stud.getAge() < 27 && stud.getAge() > 18 && stud.getGender() == Sex.MAN)
+                .filter(stud -> stud.getAge() <= 27 && stud.getAge() >= 18 && stud.getGender() == Sex.MAN)
                 .collect(Collectors.toList()));
     }
 
