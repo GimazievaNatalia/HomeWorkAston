@@ -17,6 +17,15 @@ import java.util.Set;
 public class MTSTest2 {
 
     private WebDriver driver;
+    private WebElement dropdownPaymentElement;
+   private String expectedTextNumberPhoneConnection = "Номер телефона";
+    private String expectedTextSumm = "Сумма";
+    private String expectedTextMail = "E-mail для отправки чека";
+    private String expectedTextNumberphoneInternet = "Номер абонента";
+    private String expectedTextNumberAccountInstallment = "Номер счета на 44";
+    private String expectedTextNumberAccountArrears="Номер счета на 2073";
+
+
 
     @BeforeEach
     void setUp() {
@@ -27,73 +36,116 @@ public class MTSTest2 {
         WebElement cookieAgreeButton = driver.findElement(By.xpath("//button[@id='cookie-agree']"));
         cookieAgreeButton.click();
         JavascriptExecutor js = (JavascriptExecutor) driver;
+
     }
+
 
     @Test
     @DisplayName("Проверка надписи в незаполненных полях Услуги Связи")
     public void testPaymentСommunicationServicesText() {
-        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(5));
-        String expectedTextNumberphone = "Номер телефона";
-        String expectedTextSumm = "Сумма";
-        String expectedTextmail = "E-mail для отправки чека";
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
+        WebElement fieldNumberphone = driver.findElement(By.xpath("//input[@id='connection-phone']"));
+        WebElement fieldSumm = driver.findElement(By.xpath("//input[@id='connection-sum']"));
+        WebElement fieldMail = driver.findElement(By.xpath("//input[@id='connection-email']"));
 
+        wait.until(ExpectedConditions.attributeToBe(fieldNumberphone, "placeholder", "Номер телефона"));
+        wait.until(ExpectedConditions.attributeToBe(fieldSumm, "placeholder", "Сумма"));
+        wait.until(ExpectedConditions.attributeToBe(fieldMail, "placeholder", "E-mail для отправки чека"));
 
-        WebElement fieldNumberphone = driver.findElement(By.xpath("//input[@class='phone']"));
-        WebElement fieldSumm = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        WebElement fieldmail = driver.findElement(By.xpath("//input[@class='email']"));
-
-        wait1.until(ExpectedConditions.attributeToBe(fieldNumberphone, "placeholder", "Номер телефона"));
-        wait1.until(ExpectedConditions.attributeToBe(fieldSumm, "placeholder", "Сумма"));
-        wait1.until(ExpectedConditions.attributeToBe(fieldmail, "placeholder", "E-mail для отправки чека"));
-
-        Assertions.assertEquals(expectedTextNumberphone, fieldNumberphone.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextNumberPhoneConnection, fieldNumberphone.getAttribute("placeholder"));
         Assertions.assertEquals(expectedTextSumm, fieldSumm.getAttribute("placeholder"));
-        Assertions.assertEquals(expectedTextmail, fieldmail.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextMail, fieldMail.getAttribute("placeholder"));
     }
 
     @Test
     @DisplayName("Проверка надписи в незаполненных полях Домашний интернет")
     public void testPaymentHomeInternetText() {
-        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(5));
-        String expectedTextNumberphone = "Номер телефона";
-        String expectedTextSumm = "Сумма";
-        String expectedTextmail = "E-mail для отправки чека";
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        dropdownPaymentElement = driver.findElement(By.xpath("//select[@id='pay']"));
+        Select dropdown = new Select(dropdownPaymentElement);
+        dropdown.selectByValue("Домашний интернет");
 
-        WebElement dropdownElement = driver.findElement(By.xpath("//select[@id='идентификатор_вашего_выпадающего_списка']")); ДОПИСАТЬ ХПАС
+        WebElement fieldNumberPhone = driver.findElement(By.xpath("//input[@id='internet-phone']"));
+        WebElement fieldSumm = driver.findElement(By.xpath("//input[@id='internet-sum']"));
+        WebElement fieldMail = driver.findElement(By.xpath("//input[@id='internet-email']"));
 
-        // Создать объект класса Select
-        Select dropdown = new Select(dropdownElement);
+        wait.until(ExpectedConditions.attributeToBe(fieldNumberPhone, "placeholder", "Номер абонента"));
+        wait.until(ExpectedConditions.attributeToBe(fieldSumm, "placeholder", "Сумма"));
+        wait.until(ExpectedConditions.attributeToBe(fieldMail, "placeholder", "E-mail для отправки чека"));
+
+        Assertions.assertEquals(expectedTextNumberphoneInternet, fieldNumberPhone.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextSumm, fieldSumm.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextMail, fieldMail.getAttribute("placeholder"));
+    }
+
+    @Test
+    @DisplayName("Проверка надписи в незаполненных полях Рассрочка")
+    public void testPaymentInstallmentText() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        dropdownPaymentElement = driver.findElement(By.xpath("//select[@id='pay']"));
+        Select dropdown = new Select(dropdownPaymentElement);
+        dropdown.selectByValue("Рассрочка");
+
+        WebElement fieldNumberAccount = driver.findElement(By.xpath("//input[@id='score-instalment']"));
+        WebElement fieldSumm = driver.findElement(By.xpath("//input[@id='instalment-sum']"));
+        WebElement fieldmail = driver.findElement(By.xpath("//input[@id='instalment-email']"));
+
+        wait.until(ExpectedConditions.attributeToBe(fieldNumberAccount, "placeholder", "Номер счета на 44"));
+        wait.until(ExpectedConditions.attributeToBe(fieldSumm, "placeholder", "Сумма"));
+        wait.until(ExpectedConditions.attributeToBe(fieldmail, "placeholder", "E-mail для отправки чека"));
+
+        Assertions.assertEquals(expectedTextNumberAccountInstallment, fieldNumberAccount.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextSumm, fieldSumm.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextMail, fieldmail.getAttribute("placeholder"));
+    }
+    @Test
+    @DisplayName("Проверка надписи в незаполненных полях Задолженность")
+    public void testPaymentArrearsText() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        dropdownPaymentElement = driver.findElement(By.xpath("//select[@id='pay']"));
+        Select dropdown = new Select(dropdownPaymentElement);
+        dropdown.selectByValue("Задолженность");
+
+        WebElement fieldNumberAccount = driver.findElement(By.xpath("//input[@id='score-arrears']"));
+        WebElement fieldSumm = driver.findElement(By.xpath("//input[@id='arrears-sum']"));
+        WebElement fieldmail = driver.findElement(By.xpath("//input[@id='arrears-email']"));
+
+        wait.until(ExpectedConditions.attributeToBe(fieldNumberAccount, "placeholder", "Номер счета на 2073"));
+        wait.until(ExpectedConditions.attributeToBe(fieldSumm, "placeholder", "Сумма"));
+        wait.until(ExpectedConditions.attributeToBe(fieldmail, "placeholder", "E-mail для отправки чека"));
+
+        Assertions.assertEquals(expectedTextNumberAccountArrears, fieldNumberAccount.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextSumm, fieldSumm.getAttribute("placeholder"));
+        Assertions.assertEquals(expectedTextMail, fieldmail.getAttribute("placeholder"));
     }
 
 
+        @Test
+    @DisplayName("Заполнить поля Услуги Связи и нажать на кнопку Продолжить")
+    public void testCompleteButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        dropdownPaymentElement = driver.findElement(By.xpath("//select[@id='pay']"));
+        Select dropdown = new Select(dropdownPaymentElement);
+        dropdown.selectByValue("Услуги cвязи");
+
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys("297777777");
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys("150");
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys("vasya@mail.ru");
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
 
 
-
-
-//    @Test
-//    @DisplayName("Заполнить поля и нажать на кнопку Продолжить")
-//    public void testCompleteButton() {
-//        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-//        phoneNumberInputField.click();
-//        phoneNumberInputField.sendKeys("297777777");
-//
-//        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-//        sumInputField.click();
-//        sumInputField.sendKeys("150");
-//
-//        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-//        emailInputField.click();
-//        emailInputField.sendKeys("vasya@mail.ru");
-//
-//        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-//        comleteButton.click();
-//        WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
-//        driver.switchTo().frame(frameElement);
-//        WebElement elementOnNewPage = wait4.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(),'Оплатить')]")));
-//        Assertions.assertNotNull(elementOnNewPage, "Не удалось найти ожидаемый элемент на новой странице");
-//    }
+    }
 //    @Test
 //    @DisplayName("Проверка наличия логотипов")
 //    public void testcheckLogo() {
