@@ -124,10 +124,6 @@ public class MTSTest2 {
         @Test
     @DisplayName("Заполнить поля Услуги Связи и нажать на кнопку Продолжить")
     public void testCompleteButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        dropdownPaymentElement = driver.findElement(By.xpath("//select[@id='pay']"));
-        Select dropdown = new Select(dropdownPaymentElement);
-        dropdown.selectByValue("Услуги cвязи");
 
         WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
         phoneNumberInputField.click();
@@ -143,6 +139,9 @@ public class MTSTest2 {
 
         WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
         comleteButton.click();
+
+
+
 
 
     }
@@ -161,11 +160,11 @@ public class MTSTest2 {
 //            System.out.println("Логотип: " + altText);
 //        }
 //    }
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 }
 
