@@ -1,31 +1,39 @@
 package org.example.gimazieva;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MTSTest2 {
-
     private WebDriver driver;
     private WebElement dropdownPaymentElement;
-   private String expectedTextNumberPhoneConnection = "Номер телефона";
+    private String expectedTextNumberPhoneConnection = "Номер телефона";
     private String expectedTextSumm = "Сумма";
     private String expectedTextMail = "E-mail для отправки чека";
     private String expectedTextNumberphoneInternet = "Номер абонента";
     private String expectedTextNumberAccountInstallment = "Номер счета на 44";
-    private String expectedTextNumberAccountArrears="Номер счета на 2073";
-
-
+    private String expectedTextNumberAccountArrears = "Номер счета на 2073";
+    private String expectedSumm = "150";
+    private String expectedNumber = "297777777";
+    private String email = "vasya@mail.ru";
+    private String numberCard = "2200 7007 1349 0000";
+    private String expirationDate = "02/25";
+    private String surname = "VASYA PUPKIN";
+    private String cvc = "856";
+    private String expectedTextNumberCard = "Номер карты";
+    private String expectedExpirationDate = "Срок действия";
+    private String expectedfieldName = "Имя держателя (как на карте)";
 
     @BeforeEach
     void setUp() {
@@ -35,10 +43,7 @@ public class MTSTest2 {
         driver.get("https://mts.by");
         WebElement cookieAgreeButton = driver.findElement(By.xpath("//button[@id='cookie-agree']"));
         cookieAgreeButton.click();
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-
     }
-
 
     @Test
     @DisplayName("Проверка надписи в незаполненных полях Услуги Связи")
@@ -99,6 +104,7 @@ public class MTSTest2 {
         Assertions.assertEquals(expectedTextSumm, fieldSumm.getAttribute("placeholder"));
         Assertions.assertEquals(expectedTextMail, fieldmail.getAttribute("placeholder"));
     }
+
     @Test
     @DisplayName("Проверка надписи в незаполненных полях Задолженность")
     public void testPaymentArrearsText() {
@@ -121,17 +127,17 @@ public class MTSTest2 {
     }
 
 
-        @Test
+    @Test
     @DisplayName("Заполнить поля Услуги Связи и нажать на кнопку Продолжить")
     public void testCompleteButton() {
 
         WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
         phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys("297777777");
+        phoneNumberInputField.sendKeys(expectedNumber);
 
         WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
         sumInputField.click();
-        sumInputField.sendKeys("150");
+        sumInputField.sendKeys(expectedSumm);
 
         WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
         emailInputField.click();
@@ -139,32 +145,203 @@ public class MTSTest2 {
 
         WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
         comleteButton.click();
+    }
+    @ParameterizedTest
+    @CsvSource({"mastercard", "visa", "belkart", "mir", "maestro"})
+    @DisplayName("Проверка наличия логотипов")
+    public void testcheckLogo(String paymentSystem) {
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys(expectedNumber);
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys(expectedSumm);
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys(email);
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
+        driver.switchTo().frame(frameElement);
+        By logoLocator = (By.xpath("//div[contains(@class,'cards-brands')]/img"));
+
+        List<WebElement> logos = driver.findElements(logoLocator);
+        boolean logoFound = false;
+        for (WebElement logo : logos) {
+            String srcText = logo.getAttribute("src");
+            if (srcText != null && srcText.toLowerCase().contains(paymentSystem.toLowerCase())) {
+                logoFound = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(logoFound, "Логотип " + paymentSystem + " не найден на странице");
+    }
 
 
+    @Test
+    @DisplayName("Проверка  корректности отображения суммы")
+    public void testcheckSumm() {
+
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys(expectedNumber);
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys(expectedSumm);
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys(email);
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
+
+        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
+        driver.switchTo().frame(frameElement);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
+
+        WebElement fieldSumm = driver.findElement(By.xpath("//p[@class='header__payment-amount']"));
+        String textSumm = fieldSumm.getText();
+        Pattern pattern = Pattern.compile("\\b(\\d+)\\.\\d+\\b"); //готовим регулярку
+        Matcher matcher = pattern.matcher(textSumm);
+        if (matcher.find()) {
+            String foundSum = matcher.group(1);
+            System.out.println("Найденное значение: " + foundSum);
+            Assertions.assertTrue(foundSum.contains(expectedSumm), "Сумма не совпадает. Фактическая сумма: " + textSumm);
+        }
+    }
 
 
+    @Test
+    @DisplayName("Проверка  корректности отображения суммы на кнопке")
+    public void testcheckSummButton() {
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys(expectedNumber);
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys(expectedSumm);
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys(email);
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
+
+        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
+        driver.switchTo().frame(frameElement);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        WebElement numberCardField = driver.findElement(By.xpath("//input[@id='cc-number']"));
+        numberCardField.click();
+        numberCardField.sendKeys(numberCard);
+
+        WebElement expirationDateField = driver.findElement(By.xpath("//input[@formcontrolname='expirationDate']"));
+        expirationDateField.click();
+        expirationDateField.sendKeys(expirationDate);
+
+        WebElement surnameField = driver.findElement(By.xpath("//input[@formcontrolname='holder']"));
+        surnameField.click();
+        surnameField.sendKeys(surname);
+
+        WebElement cvcField = driver.findElement(By.xpath("//input[@formcontrolname='holder']"));
+        cvcField.click();
+        cvcField.sendKeys(cvc);
+
+        WebElement summButton = driver.findElement(By.xpath("//button[@type='submit' and contains (@class,'colored')]"));
+        String amountSumm = summButton.getText();
+        Pattern pattern = Pattern.compile("(\\d+)"); //готовим регулярку
+        Matcher matcher = pattern.matcher(amountSumm);
+        if (matcher.find()) {
+            String foundSum = matcher.group(1);
+            System.out.println("Найденное значение: " + foundSum);
+            Assertions.assertTrue(foundSum.contains(expectedSumm), "Сумма не совпадает. Фактическая сумма: " + amountSumm);
+        }
+    }
+
+    @Test
+    @DisplayName("Проверка  корректности отображения номера телефона")
+    public void testcheckNumberPhone() throws InterruptedException {
+
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys(expectedNumber);
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys(expectedSumm);
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys(email);
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
+
+        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
+        driver.switchTo().frame(frameElement);
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+        Thread.sleep(8000);
+        WebElement numberPhoneElement = driver.findElement(By.xpath("//p[@class='header__payment-info']"));
+        String textNumberPhone = numberPhoneElement.getText();
+        Pattern pattern = Pattern.compile("Номер:375(\\d+)"); //готовим регулярку
+        Matcher matcher = pattern.matcher(textNumberPhone);
+        if (matcher.find()) {
+            String foundNumber = matcher.group(1);
+            System.out.println("Найденное значение: " + foundNumber);
+            Assertions.assertTrue(foundNumber.contains(expectedNumber), "Сумма не совпадает. Фактическая сумма: " + textNumberPhone);
+        }
+    }
+
+    @Test
+    @DisplayName("Проверка надписи в незаполненных полях карты")
+    public void testCardTextField() throws InterruptedException {
+
+        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
+        phoneNumberInputField.click();
+        phoneNumberInputField.sendKeys(expectedNumber);
+
+        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
+        sumInputField.click();
+        sumInputField.sendKeys(expectedSumm);
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
+        emailInputField.click();
+        emailInputField.sendKeys(email);
+
+        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
+        comleteButton.click();
+
+        WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
+        driver.switchTo().frame(frameElement);
+
+        Thread.sleep(8000);
+        WebElement numberCardField = driver.findElement(By.xpath("//label[text()='Номер карты']"));
+        WebElement fieldExpirationDate = driver.findElement(By.xpath("//label[text()='Срок действия']"));
+        WebElement fieldName = driver.findElement(By.xpath("//label[text()='Имя держателя (как на карте)']"));
+        String textNumberCardField = numberCardField.getText();
+        String textfieldExpirationDate = fieldExpirationDate.getText();
+        String textfieldName = fieldName.getText();
+
+        Assertions.assertEquals(expectedTextNumberCard, textNumberCardField);
+        Assertions.assertEquals(expectedExpirationDate, textfieldExpirationDate);
+        Assertions.assertEquals(expectedfieldName, textfieldName);
 
     }
-//    @Test
-//    @DisplayName("Проверка наличия логотипов")
-//    public void testcheckLogo() {
-//        By logoLocator = (By.xpath("//div[@class='pay__partners']/ul/li/img"));
-//        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-//        wait2.until(ExpectedConditions.numberOfElementsToBe(logoLocator, 6));
-//        List<WebElement> logos = driver.findElements(logoLocator);
-//
-//        for (WebElement logo : logos) { // проверка атрибута "alt" для каждого логотипа
-//            String altText = logo.getAttribute("alt");
-//            Assertions.assertNotNull(altText, "Атрибут 'alt' отсутствует");
-//            Assertions.assertFalse(altText.isEmpty(), "Атрибут 'alt' не должен быть пустым");
-//            System.out.println("Логотип: " + altText);
-//        }
-//    }
-//    @AfterEach
-//    public void tearDown() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }
 
