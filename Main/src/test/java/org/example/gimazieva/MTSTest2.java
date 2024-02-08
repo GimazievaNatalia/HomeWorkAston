@@ -177,9 +177,10 @@ public class MTSTest2 {
     public void testcheckSumm() throws InterruptedException {
         completeButton();
 
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
-        Thread.sleep(8000);
+        Thread.sleep(5000);
 
         WebElement fieldSumm = driver.findElement(By.xpath("//p[@class='header__payment-amount']"));
         String textSumm = fieldSumm.getText();
