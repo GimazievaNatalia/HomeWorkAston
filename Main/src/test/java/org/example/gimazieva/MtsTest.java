@@ -2,12 +2,12 @@ package org.example.gimazieva;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +15,10 @@ import java.util.Set;
 
 public class MtsTest {
     private WebDriver driver;
+    private String expectedText = "Онлайн пополнение\n" + "без комиссии";
+    private String numberPhone = "297777777";
+    private String summ = "150";
+    private String email = "vasya@mail.ru";
 
     @BeforeEach
     void setUp() {
@@ -24,17 +28,14 @@ public class MtsTest {
         driver.get("https://mts.by");
         WebElement cookieAgreeButton = driver.findElement(By.xpath("//button[@id='cookie-agree']"));
         cookieAgreeButton.click();
-        JavascriptExecutor js = (JavascriptExecutor) driver;
     }
 
     @Test
     @DisplayName("Проверка имени блока")
     public void testReplenishmentOnlineText() {
-        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
-        String expectedText = "Онлайн пополнение\n" +
-                "без комиссии";
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         WebElement replenishmentOnlineText = driver.findElement(By.xpath("//div[@class='pay__wrapper']/h2"));
-        wait1.until(ExpectedConditions.textToBePresentInElement(replenishmentOnlineText, expectedText));
+        wait.until(ExpectedConditions.textToBePresentInElement(replenishmentOnlineText, expectedText));
         Assertions.assertEquals(expectedText, replenishmentOnlineText.getText());
     }
 
@@ -42,8 +43,8 @@ public class MtsTest {
     @DisplayName("Проверка наличия логотипов")
     public void testcheckLogo() {
         By logoLocator = (By.xpath("//div[@class='pay__partners']/ul/li/img"));
-        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(3));
-        wait2.until(ExpectedConditions.numberOfElementsToBe(logoLocator, 6));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.numberOfElementsToBe(logoLocator, 6));
         List<WebElement> logos = driver.findElements(logoLocator);
 
         for (WebElement logo : logos) { // проверка атрибута "alt" для каждого логотипа
@@ -57,13 +58,11 @@ public class MtsTest {
     @Test
     @DisplayName("Проверка ссылки")
     public void testcheckLink() {
-
         WebElement serviceLink = driver.findElement(By.xpath("//a[text()='Подробнее о сервисе']"));
         serviceLink.click();
-        WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(6));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         String mainWindowHandle = driver.getWindowHandle();
         Set<String> allWindowHandles = driver.getWindowHandles();
-
 
         for (String windowHandle : allWindowHandles) {
             if (!windowHandle.equals(mainWindowHandle)) {
@@ -71,7 +70,7 @@ public class MtsTest {
             }
         }
 
-        WebElement elementOnNewPage = wait3.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='container-fluid']/h3")));
+        WebElement elementOnNewPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='container-fluid']/h3")));
         Assertions.assertNotNull(elementOnNewPage, "Не удалось найти ожидаемый элемент на новой странице");
     }
 
@@ -80,22 +79,22 @@ public class MtsTest {
     public void testCompleteButton() {
         WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
         phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys("297777777");
+        phoneNumberInputField.sendKeys(numberPhone);
 
         WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
         sumInputField.click();
-        sumInputField.sendKeys("150");
+        sumInputField.sendKeys(summ);
 
         WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
         emailInputField.click();
-        emailInputField.sendKeys("vasya@mail.ru");
+        emailInputField.sendKeys(email);
 
         WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
         comleteButton.click();
-        WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
-        WebElement elementOnNewPage = wait4.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(),'Оплатить')]")));
+        WebElement elementOnNewPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[contains(text(),'Оплатить')]")));
         Assertions.assertNotNull(elementOnNewPage, "Не удалось найти ожидаемый элемент на новой странице");
     }
 
