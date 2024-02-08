@@ -127,29 +127,10 @@ public class MTSTest2 {
     }
 
 
-    @Test
-    @DisplayName("Заполнить поля Услуги Связи и нажать на кнопку Продолжить")
-    public void testCompleteButton() {
 
-        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-        phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys(expectedNumber);
+   //Заполнить поля Услуги Связи и нажать на кнопку Продолжить
+    public void completeButton() {
 
-        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        sumInputField.click();
-        sumInputField.sendKeys(expectedSumm);
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-        emailInputField.click();
-        emailInputField.sendKeys("vasya@mail.ru");
-
-        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-        comleteButton.click();
-    }
-    @ParameterizedTest
-    @CsvSource({"mastercard", "visa", "belkart", "mir", "maestro"})
-    @DisplayName("Проверка наличия логотипов")
-    public void testcheckLogo(String paymentSystem) {
         WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
         phoneNumberInputField.click();
         phoneNumberInputField.sendKeys(expectedNumber);
@@ -165,9 +146,17 @@ public class MTSTest2 {
         WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
         comleteButton.click();
 
+    }
+    @ParameterizedTest
+    @CsvSource({"mastercard", "visa", "belkart", "mir", "maestro"})
+    @DisplayName("Проверка наличия логотипов")
+    public void testcheckLogo(String paymentSystem) throws InterruptedException {
+        completeButton();
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
+        Thread.sleep(5000);
         By logoLocator = (By.xpath("//div[contains(@class,'cards-brands')]/img"));
 
         List<WebElement> logos = driver.findElements(logoLocator);
@@ -185,26 +174,12 @@ public class MTSTest2 {
 
     @Test
     @DisplayName("Проверка  корректности отображения суммы")
-    public void testcheckSumm() {
-
-        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-        phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys(expectedNumber);
-
-        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        sumInputField.click();
-        sumInputField.sendKeys(expectedSumm);
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-        emailInputField.click();
-        emailInputField.sendKeys(email);
-
-        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-        comleteButton.click();
+    public void testcheckSumm() throws InterruptedException {
+        completeButton();
 
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
+        Thread.sleep(8000);
 
         WebElement fieldSumm = driver.findElement(By.xpath("//p[@class='header__payment-amount']"));
         String textSumm = fieldSumm.getText();
@@ -213,7 +188,7 @@ public class MTSTest2 {
         if (matcher.find()) {
             String foundSum = matcher.group(1);
             System.out.println("Найденное значение: " + foundSum);
-            Assertions.assertTrue(foundSum.contains(expectedSumm), "Сумма не совпадает. Фактическая сумма: " + textSumm);
+            Assertions.assertEquals(expectedSumm, foundSum);
         }
     }
 
@@ -221,20 +196,7 @@ public class MTSTest2 {
     @Test
     @DisplayName("Проверка  корректности отображения суммы на кнопке")
     public void testcheckSummButton() {
-        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-        phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys(expectedNumber);
-
-        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        sumInputField.click();
-        sumInputField.sendKeys(expectedSumm);
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-        emailInputField.click();
-        emailInputField.sendKeys(email);
-
-        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-        comleteButton.click();
+        completeButton();
 
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
@@ -263,33 +225,19 @@ public class MTSTest2 {
         if (matcher.find()) {
             String foundSum = matcher.group(1);
             System.out.println("Найденное значение: " + foundSum);
-            Assertions.assertTrue(foundSum.contains(expectedSumm), "Сумма не совпадает. Фактическая сумма: " + amountSumm);
+            Assertions.assertEquals(expectedSumm, foundSum);
         }
     }
 
     @Test
     @DisplayName("Проверка  корректности отображения номера телефона")
     public void testcheckNumberPhone() throws InterruptedException {
-
-        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-        phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys(expectedNumber);
-
-        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        sumInputField.click();
-        sumInputField.sendKeys(expectedSumm);
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-        emailInputField.click();
-        emailInputField.sendKeys(email);
-
-        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-        comleteButton.click();
+        completeButton();
 
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
         Thread.sleep(8000);
+
         WebElement numberPhoneElement = driver.findElement(By.xpath("//p[@class='header__payment-info']"));
         String textNumberPhone = numberPhoneElement.getText();
         Pattern pattern = Pattern.compile("Номер:375(\\d+)"); //готовим регулярку
@@ -297,28 +245,14 @@ public class MTSTest2 {
         if (matcher.find()) {
             String foundNumber = matcher.group(1);
             System.out.println("Найденное значение: " + foundNumber);
-            Assertions.assertTrue(foundNumber.contains(expectedNumber), "Сумма не совпадает. Фактическая сумма: " + textNumberPhone);
+            Assertions.assertEquals(expectedNumber, foundNumber);
         }
     }
 
     @Test
     @DisplayName("Проверка надписи в незаполненных полях карты")
     public void testCardTextField() throws InterruptedException {
-
-        WebElement phoneNumberInputField = driver.findElement(By.xpath("//input[@class='phone']"));
-        phoneNumberInputField.click();
-        phoneNumberInputField.sendKeys(expectedNumber);
-
-        WebElement sumInputField = driver.findElement(By.xpath("//input[@class='total_rub']"));
-        sumInputField.click();
-        sumInputField.sendKeys(expectedSumm);
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@class='email']"));
-        emailInputField.click();
-        emailInputField.sendKeys(email);
-
-        WebElement comleteButton = driver.findElement(By.xpath("//button[text()='Продолжить']"));
-        comleteButton.click();
+        completeButton();
 
         WebElement frameElement = driver.findElement(By.xpath("//iframe[@class='bepaid-iframe']"));
         driver.switchTo().frame(frameElement);
@@ -334,7 +268,6 @@ public class MTSTest2 {
         Assertions.assertEquals(expectedTextNumberCard, textNumberCardField);
         Assertions.assertEquals(expectedExpirationDate, textfieldExpirationDate);
         Assertions.assertEquals(expectedfieldName, textfieldName);
-
     }
 
     @AfterEach
