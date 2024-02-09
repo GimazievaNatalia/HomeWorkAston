@@ -14,8 +14,8 @@ public class PageHomeWidberris extends BasePage{
     private final By tableSizeM = By.xpath("//div[@class='popup__content']//span[text()='M']");
     private final By size = By.xpath("//h2[text()='Выберите размер']");
     private final By product1 = By.xpath("//article[@data-card-index='10']//a");
-    private final By product2 = By.xpath("//article[@data-card-index='15']//span[@class='product-card__name']");
-    private final By product3 = By.xpath("//article[@data-card-index='20']//span[@class='product-card__name']");
+    private final By product2 = By.xpath("//article[@data-card-index='15']//a");
+    private final By product3 = By.xpath("//article[@data-card-index='20']//a");
     private final By basketButton = By.xpath("//span[contains(@class,'icon--basket')]");
 
 
@@ -31,10 +31,10 @@ public class PageHomeWidberris extends BasePage{
 
     }
     public PageHomeWidberris getTextNameProduct(){
-       // driver.findElement(product1).getAttribute("ariaLabel");
 
-        //driver.findElement(product2).getText();
-       // driver.findElement(product3).getText();
+        driver.findElement(product1).getAttribute("ariaLabel");
+        driver.findElement(product2).getAttribute("ariaLabel");;
+        driver.findElement(product3).getAttribute("ariaLabel");;
         return this;
     }
 }
