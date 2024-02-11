@@ -51,14 +51,15 @@ public class PageHomeWidberris extends BasePage {
             textproductPriceAndNameList.add(text);
         }
 
-        String regex = "(\\d[\\s\\d]*) ₽[\\s\\S]*?\\\\n\\\\n(.*) \\/ ([^\\\\n]+)"; // Забираем цену и название товара
+        //String regex = "(\\d[\\s\\d]*) ₽[\\s\\S]*?\\n\\n(.*?)\\n\\n"; // Забираем цену и название товара
+        String regex = "(\\d[\\s\\d]*) ₽[\\s\\S]*?\\n\\n(.*) \\/ (.*)\\n\\n\\d(.*)";
         Pattern pattern = Pattern.compile(regex);
 
         for (String text : textproductPriceAndNameList) {
             Matcher matcher = pattern.matcher(text);
             if (matcher.find()) {
                 String price = matcher.group(1).replaceAll("\\s", ""); // Группа 1 - цена, Группа 2 - название товара
-                String productName = matcher.group(2).trim();
+                String productName = matcher.group(3).trim();
                 prices.add(price);
                 productNames.add(productName);
             }
