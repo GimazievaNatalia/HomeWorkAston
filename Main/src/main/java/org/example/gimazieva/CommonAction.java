@@ -2,11 +2,8 @@ package org.example.gimazieva;
 
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.concurrent.TimeUnit;
-
 
 import static org.example.gimazieva.Config.PLATFORM_BROWSER;
 import static org.example.gimazieva.Constan.TimeoutVariable.IMPLISIT_WAIT;
