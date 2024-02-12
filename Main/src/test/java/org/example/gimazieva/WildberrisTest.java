@@ -1,7 +1,5 @@
 package org.example.gimazieva;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.example.gimazieva.Constan.Urls.URL_WIDBERRIS;

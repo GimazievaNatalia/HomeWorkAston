@@ -26,6 +26,7 @@ public class BasketPage extends BasePage {
 
         for (By productInBasket : productInBasketAll) {
             WebElement productElement = driver.findElement(productInBasket);
+            waitElementIsVisible(productElement);
             String textBasket = productElement.getAttribute("outerText");
             textproductInBasket.add(textBasket);
         }

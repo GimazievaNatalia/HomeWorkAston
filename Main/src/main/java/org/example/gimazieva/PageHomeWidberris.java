@@ -40,6 +40,7 @@ public class PageHomeWidberris extends BasePage {
 
         for (By productPriceAndNameList : productPriceAndNameLists) {
             WebElement productElement = driver.findElement(productPriceAndNameList);
+            waitElementIsVisible(productElement);
             String text = productElement.getAttribute("innerText");
             textproductPriceAndNameList.add(text);
         }
