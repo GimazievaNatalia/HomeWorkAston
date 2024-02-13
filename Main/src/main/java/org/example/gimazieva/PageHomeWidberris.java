@@ -7,9 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +39,14 @@ public class PageHomeWidberris extends BasePage {
     private final List<String> productNames = new ArrayList<>();
     private final By[] addToBasketButtons = {addToBusketButton1, addToBusketButton2, addToBusketButton3};
 
+    public List<String> getPrices() {
+        return prices;
+    }
+
+    public List<String> getProductNames() {
+        return productNames;
+    }
+
     public PageHomeWidberris getTextPriceAndNameProducts() { //Забираем названия товаров и цен
 
         for (By productPriceAndNameList : productPriceAndNameLists) {
@@ -52,18 +63,26 @@ public class PageHomeWidberris extends BasePage {
             Matcher matcher = pattern.matcher(text1);
             if (matcher.find()) {
                 String price = matcher.group(1).replaceAll("\\s", ""); // Группа 1 - цена, Группа 3 - название товара
+                BigDecimal originalPrice = new BigDecimal(price);
+                BigDecimal calculatedPrice = originalPrice.multiply(new BigDecimal("1.0315"));
+                long roundedValue = Math.round(calculatedPrice.doubleValue());
+
+                // Преобразуем к округленному значению
+                String priceWB = String.valueOf(roundedValue);
                 String productName = matcher.group(3).trim();
-                prices.add(price);
+                prices.add(priceWB);
                 productNames.add(productName);
+                Collections.sort(prices);
+                Collections.sort(productNames);
             }
         }
         return this;
     }
     public PageHomeWidberris getTotalSumm() { //считаем общую сумму до корзины
-        double totalSum = 0.0;
+        int totalSum = 0;
 
         for (String price : prices) {
-            double numericValue = Double.parseDouble(price);
+            int numericValue = Integer.parseInt(price);
             totalSum += numericValue;
         }
         return this;

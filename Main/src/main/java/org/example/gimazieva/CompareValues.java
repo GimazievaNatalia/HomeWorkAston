@@ -18,15 +18,4 @@ public class CompareValues extends BasePage{
 
         return this;
     }
-
-    public CompareValues compareSumm(){
-
-        Assertions.assertEquals();
-
-        return this;
-    }
-    public CompareValues compareCount(){
-
-        return this;
-    }
 }

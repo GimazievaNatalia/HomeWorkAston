@@ -9,10 +9,10 @@ public class BaseTest {
     protected BasketPage basketPage = new BasketPage(driver);
     protected CompareValues compareValues =new CompareValues(driver);
 
-    @AfterAll
-    public void clouse() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterAll
+//    public void clouse() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 }

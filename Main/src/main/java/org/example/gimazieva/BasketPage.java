@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +22,14 @@ public class BasketPage extends BasePage {
     List<String> textproductInBasket = new ArrayList<>();
     List<String> pricesInBasket = new ArrayList<>();
     List<String> productNamesInBasket = new ArrayList<>();
+
+    public List<String> getPricesInBasket() {
+        return pricesInBasket;
+    }
+
+    public List<String> getProductNamesInBasket() {
+        return productNamesInBasket;
+    }
 
     public BasketPage getTextNamePriceBasket() {
 
@@ -43,19 +52,22 @@ public class BasketPage extends BasePage {
                String productName = matcherProduct.group(1).trim();
                pricesInBasket.add(price);
                productNamesInBasket.add(productName);
+               Collections.sort(pricesInBasket);
+               Collections.sort(productNamesInBasket);
            }
        }
        return this;
     }
     public BasketPage getTotalSummInBasket() { //считаем общую сумму в корзины
-        double totalSumInBasket = 0.0;
+        int totalSumInBasket = 0;
 
         for (String price : pricesInBasket) {
-            double numericValue = Double.parseDouble(price);
+            int numericValue = Integer.parseInt(price);
             totalSumInBasket += numericValue;
         }
         return this;
     }
+
     public BasketPage getTotalCountProductInBasket() {  //считаем общее колличество товаров в корзине
         int totalCountProductsInBasket = pricesInBasket.size();
         return this;
