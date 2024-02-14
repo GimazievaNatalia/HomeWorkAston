@@ -16,19 +16,20 @@ public class WildberrisTest extends BaseTest {
         pageHomeWidberris.putInBasket();
         pageHomeWidberris.clickBasket();
         List<String> firstCollection = pageHomeWidberris.getProductNames();
+        basketPage.getTextNamePriceBasket();
         List<String> secondCollection = basketPage.getProductNamesInBasket();
-       basketPage.getTextNamePriceBasket();
 
         Assertions.assertEquals(pageHomeWidberris.getTotalCountProducts(), basketPage.getTotalCountProductInBasket() , "Количество товаров в корзине не соответствует ожидаемому");
-        Assertions.assertEquals(pageHomeWidberris.getTotalSumm(),basketPage.getTotalSummInBasket(), "Сумма товаров до корзины не совпадает с суммой товаров в корзине" );
+        Assertions.assertLinesMatch(firstCollection,secondCollection); //Проверка названий
         Assertions.assertEquals(pageHomeWidberris.getPrices(),basketPage.getPricesInBasket(), "Цены не совпадают");
-        Assertions.assertTrue(secondCollection.containsAll(firstCollection)); //Проверка названий
+        Assertions.assertEquals(pageHomeWidberris.getTotalSumm(),basketPage.getTotalSummInBasket(), "Сумма товаров до корзины не совпадает с суммой товаров в корзине" );
+        driver.quit();
     }
-    @AfterAll
-    public void clouse() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterAll
+//    public void clouse() {
+//        if (driver != null) {
+//
+//        }
+//    }
 
 }

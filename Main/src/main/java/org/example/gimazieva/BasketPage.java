@@ -42,7 +42,8 @@ public class BasketPage extends BasePage {
             textproductInBasket.add(textBasket);
         }
         String regex = "(\\d.*) ₽";
-        String nameProduct = "\\s(.*)\\n\\n";
+        //String nameProduct = "\\s(.*),.*\\n\\n";
+        String nameProduct = "^(.*?),";
         Pattern patternProduct = Pattern.compile(nameProduct);
         Pattern pattern = Pattern.compile(regex);
 
@@ -50,7 +51,7 @@ public class BasketPage extends BasePage {
             Matcher matcher = pattern.matcher(text);
             Matcher matcherProduct = patternProduct.matcher(text);
             if (matcher.find() && matcherProduct.find()) {
-                String price = matcher.group(1).replaceAll("\\s", ""); // Группа 1 - цена, Группа 3 - название товара
+                String price = matcher.group(1).replaceAll(" ", ""); // Группа 1 - цена, Группа 3 - название товара
                 String productName = matcherProduct.group(1).trim();
                 pricesInBasket.add(price);
                 productNamesInBasket.add(productName);

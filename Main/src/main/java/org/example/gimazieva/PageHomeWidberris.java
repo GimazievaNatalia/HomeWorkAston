@@ -56,19 +56,21 @@ public class PageHomeWidberris extends BasePage {
             textproductPriceAndNameList.add(text);
         }
 
-        String regex = "(\\d[\\s\\d]*) ₽[\\s\\S]*?\\n\\n(.*) \\/ (.*)\\n\\n\\d(.*)";
-
-        Pattern pattern = Pattern.compile(regex);
+        String priceRegex = "(\\d.*) ₽.* ₽";
+        String nameRegex = "\\/\\s(.*)";
+        Pattern pricePattern = Pattern.compile(priceRegex);
+        Pattern namePattern = Pattern.compile(nameRegex);
 
         for (String text1 : textproductPriceAndNameList) {
-            Matcher matcher = pattern.matcher(text1);
-            if (matcher.find()) {
-                String price = matcher.group(1).replaceAll("\\s", ""); // Группа 1 - цена,
+            Matcher priceMatcher = pricePattern.matcher(text1);
+            Matcher nameMatcher = namePattern.matcher(text1);
+            if (priceMatcher.find() && nameMatcher.find()) {
+                String price = priceMatcher.group(1).replaceAll(" ", ""); // Группа 1 - цена,
                 BigDecimal originalPrice = new BigDecimal(price);
                 BigDecimal calculatedPrice = originalPrice.multiply(new BigDecimal("1.031")); //Увеличиваем на 3%
                 int roundedValue = (int) Math.ceil(calculatedPrice.doubleValue());
                 String priceWB = String.valueOf(roundedValue);
-                String productName = matcher.group(3).trim();//Группа 3 - название товара
+                String productName = nameMatcher.group(1).trim();//Группа 3 - название товара
                 prices.add(priceWB);
                 productNames.add(productName);
                 Collections.sort(prices);
@@ -94,6 +96,7 @@ public class PageHomeWidberris extends BasePage {
     }
 
     private PageHomeWidberris checkOnClothing(By addToBasketButton) {  //Проверка товара одежда или нет
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement addToBasketElement = (new WebDriverWait(driver, Duration.ofSeconds(EXPLISIT_WAIT)))
                 .until(ExpectedConditions.elementToBeClickable(addToBasketButton));
         addToBasketElement.click();
