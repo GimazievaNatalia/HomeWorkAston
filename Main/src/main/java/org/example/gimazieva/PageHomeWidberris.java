@@ -87,6 +87,7 @@ public class PageHomeWidberris extends BasePage {
             int numericValue = Integer.parseInt(price);
             totalSum += numericValue;
         }
+
         return totalSum;
     }
 
@@ -101,11 +102,8 @@ public class PageHomeWidberris extends BasePage {
                 .until(ExpectedConditions.elementToBeClickable(addToBasketButton));
         addToBasketElement.click();
 
-        boolean isClothing = false;
         try {
             WebElement sizeElement = driver.findElement(size);
-            isClothing = true;
-
             WebElement sizeSmall = sizeElement.findElement(sizeClothing);
             sizeSmall.click();
         } catch (Exception ignored) {
