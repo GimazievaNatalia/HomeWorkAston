@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import org.assertj;
+import org.assertj.core.api.SoftAssertions;
 import static org.example.gimazieva.Constan.Urls.URL_WIDBERRIS;
 public class WildberrisTest extends BaseTest {
 
