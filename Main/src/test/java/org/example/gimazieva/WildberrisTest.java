@@ -4,25 +4,28 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-
+import org.assertj;
 import static org.example.gimazieva.Constan.Urls.URL_WIDBERRIS;
 public class WildberrisTest extends BaseTest {
 
     @Test
-    public void checkWildberris() {
+    public void checkWildberris() throws InterruptedException {
+        SoftAssertions softAssert = new SoftAssertions();
         basePage.openPage(URL_WIDBERRIS);
 
         pageHomeWidberris.getTextPriceAndNameProducts();
         pageHomeWidberris.putInBasket();
         pageHomeWidberris.clickBasket();
-        List<String> firstCollection = pageHomeWidberris.getProductNames();
-        basketPage.getTextNamePriceBasket();
-        List<String> secondCollection = basketPage.getProductNamesInBasket();
+       // List<String> firstCollection = ;
+        basketPage.getTextPriceBasket();
+        basketPage.getTextNameBasket();
+        //List<String> secondCollection = basketPage.getProductNamesInBasket();
 
         Assertions.assertEquals(pageHomeWidberris.getTotalCountProducts(), basketPage.getTotalCountProductInBasket() , "Количество товаров в корзине не соответствует ожидаемому");
-        Assertions.assertLinesMatch(firstCollection,secondCollection); //Проверка названий
-        Assertions.assertEquals(pageHomeWidberris.getPrices(),basketPage.getPricesInBasket(), "Цены не совпадают");
-        Assertions.assertEquals(pageHomeWidberris.getTotalSumm(),basketPage.getTotalSummInBasket(), "Сумма товаров до корзины не совпадает с суммой товаров в корзине" );
+        softAssert.assertLinesMatch(basketPage.getProductNamesInBasket(), pageHomeWidberris.getProductNames()); //Проверка названий
+       // Assertions.assertTrue(pageHomeWidberris.getProductNames().contains(basketPage.getProductNamesInBasket()));
+        Assertions.assertEquals(basketPage.getPricesInBasket(), pageHomeWidberris.getPrices(),"Цены не совпадают");
+        Assertions.assertEquals(basketPage.getTotalSummInBasket(),pageHomeWidberris.getTotalSumm(), "Сумма товаров до корзины не совпадает с суммой товаров в корзине" );
         driver.quit();
     }
 //    @AfterAll
