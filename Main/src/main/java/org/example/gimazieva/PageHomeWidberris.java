@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 import static org.example.gimazieva.Constan.TimeoutVariable.EXPLISIT_WAIT;
 
 public class PageHomeWidberris extends BasePage {
-
     public PageHomeWidberris(WebDriver driver) {
         super(driver);
     }
