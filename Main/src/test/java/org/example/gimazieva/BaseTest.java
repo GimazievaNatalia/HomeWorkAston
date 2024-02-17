@@ -7,11 +7,9 @@ import static io.restassured.RestAssured.expect;
 import static io.restassured.RestAssured.given;
 
 public class BaseTest {
-   Person pasha = new Person("Pasha", "student");
-    Person masha = new Person("Masha","teacher");
+    Body stringCheck = new Body("Check hello");
 
-    RequestSpecification requestSpec = given()
-            .log().body().baseUri("https://postman-echo.com/");
+    RequestSpecification requestSpec = given().baseUri("https://postman-echo.com/");
 
     ResponseSpecification statusCodeSpec = expect().statusCode(200);
 
