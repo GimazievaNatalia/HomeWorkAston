@@ -14,5 +14,11 @@ public class CalculatorTest extends BaseTest {
         Assertions.assertEquals(calculationMethods.multiplication(), "32");
         Assertions.assertEquals(calculationMethods.division(), "2");
     }
+	@AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 
 }
