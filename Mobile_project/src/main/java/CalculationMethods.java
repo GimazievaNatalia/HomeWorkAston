@@ -1,4 +1,4 @@
-import io.appium.java_client.android.AndroidDriver;
+
 import org.example.SetupDriver;
 import org.openqa.selenium.By;
 
@@ -10,9 +10,7 @@ public class CalculationMethods extends SetupDriver {
     private final By lblresult = By.id("com.google.android.calculator:id/result_final");
     private final By buttonMinus = By.id("com.google.android.calculator:id/op_sub");
     private final By buttonMultiplication = By.id("com.google.android.calculator:id/op_mul");
-
     private final By buttonDivision = By.id("com.google.android.calculator:id/op_div");
-
     private final By button8 = By.id("com.google.android.calculator:id/digit_8");
 
     public String sum() {
